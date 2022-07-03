@@ -15,8 +15,7 @@ async function getAllUsers() {
 async function addUser(user){
 	const connectionDB = await connection.getConnection();
 	
-	//primer parámetro lo que se encripta
-	//segunda parámetro (salt), número de iteraciones para hacer la encripción
+	console.log(user);
 	user.password = bcrypt.hashSync(user.password,8);
 
 	const result = await connectionDB.db('my-website')

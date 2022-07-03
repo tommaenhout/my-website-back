@@ -5,12 +5,14 @@ const auth = require('../middleware/auth');
 
 
 
+
 router.get('/',auth, async(req,res)=>{
 	const allUsers = await data.getAllUsers();
 	res.send(allUsers)
 });
 
 router.post('/', async (req,res)=>{
+	console.log(req.body);
 	const result = await data.addUser(req.body);
 	res.send(result);
 });

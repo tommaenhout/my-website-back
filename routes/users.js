@@ -17,6 +17,16 @@ router.post('/', async (req,res)=>{
 	res.send(result);
 });
 
+router.get('/findSimilar' , async (req,res)=>{
+	console.log(req.body)
+	try {
+	const result = await data.findSimilarUsers(req.body);
+	res.send(result);
+	} catch (error) {
+		res.status(404).send({error: error.message});
+	}
+})
+
 router.post('/login', async(req,res)=>{
 	try{
 		const user = await data.findByCredentials(req.body.email,req.body.password);

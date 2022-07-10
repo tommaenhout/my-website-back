@@ -31,17 +31,28 @@ async function findByCredentials(email,password){
 		.collection('users')
 		.findOne({email:email});
 	if(!user){
-		throw new Error('Contraseña inválida');
+		throw new Error('Invalid email or password');
 	}
 
 	const isMatch = bcrypt.compareSync(password, user.password);
 
 	if(!isMatch){
-		throw new Error('Contraseña inválida');
+		throw new Error('Invalid email or password');
 	}
 
 	return user;
 
+}
+
+async function findSimilarUsers(user){
+	console.log(user)
+	const connectionDB = await connection.getConnection();
+	const users = await connectionDB.db('my-website')
+		.collection('users')
+		.find({level: {$regex: user.level, $options: 'i'},
+				email: {$regex: user.email, $options: 'i'}})
+		.toArray();
+	return users;
 }
 
 async function generateJWT(user){
@@ -52,4 +63,4 @@ async function generateJWT(user){
 
 
 
-    module.exports = {getAllUsers, addUser, findByCredentials, generateJWT};
+    module.exports = {getAllUsers, addUser, findByCredentials, generateJWT, findSimilarUsers};
